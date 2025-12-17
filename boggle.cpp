@@ -94,6 +94,40 @@ std::set<std::string> boggle(const std::set<std::string>& dict, const std::set<s
 bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board, 
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
-//add your solution here!
+  //add your solution here!
+  //check da bounds 
+  if(r >= board.size() || c>=board.size()){
+    return false;
+  }
+
+  word.push_back(board[r][c]);
+
+  
+  //dont recur if word is not a part of bigger word
+  if(prefix.find(word)==prefix.end()){
+    if(dict.find(word) != dict.end()){
+      result.insert(word);
+    }
+    return (dict.find(word) != dict.end());
+  }
+
+  bool val = dict.find(word) != dict.end();
+  bool further = false;
+  //recur part
+  if(r+dr < board.size() && c+dc < board.size()){
+    further = boggleHelper(dict, prefix, board, word, result, r+dr, c+dc, dr, dc);
+  }
+
+  if(further == false && val == true){
+    result.insert(word);
+  }
+
+  if(val || further){
+    return true;
+  }
+  else{
+    return false;
+  }
+
 
 }
